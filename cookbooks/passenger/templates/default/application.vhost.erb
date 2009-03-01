@@ -1,0 +1,35 @@
+<VirtualHost *:80>
+  ServerName <%= @server_name %>
+  ServerAlias <% @aliases.each do |a| %><%= "#{a}" %> <% end %>
+  DocumentRoot <%= @docroot %>
+  RewriteEngine On
+  RailsBaseURI /
+  RailsEnv <%= @env %>
+  RailsAllowModRewrite on
+  PassengerMaxPoolSize <%= @max_pool_size %>
+
+  <Directory <%= @docroot %>>
+    Options FollowSymLinks
+    AllowOverride None
+    Order allow,deny
+    Allow from all
+  </Directory>
+
+  # Canonical host
+  RewriteCond %{HTTP_HOST}   !^<%= @server_name %> [NC]
+  RewriteCond %{HTTP_HOST}   !^$
+  RewriteRule ^/(.*)$        http://<%= @server_name %>/$1 [L,R=301]
+
+  RewriteCond %{DOCUMENT_ROOT}/system/maintenance.html -f
+  RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+  RewriteRule ^.*$ /system/maintenance.html [L]
+
+  # LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\" \"%{cookie}i\" <%= @app %>" combined_cookie_vhost
+  # ErrorLog syslog:user
+  # CustomLog |/usr/local/bin/apache_syslog combined_cookie_vhost
+  # RewriteLog |/usr/local/bin/apache_syslog
+  CustomLog /var/log/apache2/<%= @app %>_access.log combined
+  ErrorLog /var/log/apache2/<%= @app %>_error.log
+  RewriteLog /var/log/apache2/<%= @app %>_rewrite.log
+  # RewriteLogLevel 3
+</VirtualHost>

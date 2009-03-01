@@ -1,0 +1,10 @@
+#!/usr/bin/perl
+use Sys::Syslog qw(:DEFAULT setlogsock);
+
+setlogsock('unix');
+openlog('apache', 'ndelay,pid', LOG_USER);
+
+while ($log = <STDIN>) {
+  syslog(LOG_INFO, $log);
+}
+closelog

@@ -1,0 +1,76 @@
+ServerRoot "<%= @node[:apache][:dir] %>"
+ServerName <%= @node[:apache][:servername] %>
+LockFile /var/lock/apache2/accept.lock
+PidFile /var/run/apache2.pid
+Timeout <%= @node[:apache][:timeout] %>
+KeepAlive <%= @node[:apache][:keepalive] %>
+MaxKeepAliveRequests <%= @node[:apache][:keepaliverequests] %>
+KeepAliveTimeout <%= @node[:apache][:keepalivetimeout] %>
+User <%= @node[:apache][:user] %>
+Group <%= @node[:apache][:user] %>
+TypesConfig /etc/mime.types
+DefaultType text/plain
+HostnameLookups Off
+#ErrorLog syslog:user
+ErrorLog /var/log/apache2/error.log
+LogLevel warn
+ServerTokens Full
+ServerSignature On
+
+<Directory "/">
+  Options FollowSymLinks -SymLinksIfOwnerMatch
+  AllowOverride None
+</Directory>
+
+<IfModule mpm_worker_module>
+  StartServers          <%= @node[:apache][:worker][:startservers] %>
+  MaxClients            <%= @node[:apache][:worker][:maxclients] %>
+  MinSpareThreads       <%= @node[:apache][:worker][:minsparethreads] %>
+  MaxSpareThreads       <%= @node[:apache][:worker][:maxsparethreads] %>
+  ThreadsPerChild       <%= @node[:apache][:worker][:threadsperchild] %>
+  MaxRequestsPerChild   <%= @node[:apache][:worker][:maxrequestsperchild] %>
+  ThreadStackSize       <%= @node[:apache][:worker][:threadstacksize] %>
+</IfModule>
+
+AccessFileName .htaccess
+<Files ~ "^\.ht">
+  Order allow,deny
+  Deny from all
+</Files>
+
+Include <%= @node[:apache][:dir] %>/mods-enabled/*.load
+Include <%= @node[:apache][:dir] %>/mods-enabled/*.conf
+Include <%= @node[:apache][:dir] %>/ports.conf
+Include <%= @node[:apache][:dir] %>/conf.d/*.conf
+
+LogFormat "%h %l %u %t \"%r\" %>s %b \"%{Referer}i\" \"%{User-Agent}i\"" combined
+LogFormat "%h %l %u %t \"%r\" %>s %b" common
+LogFormat "%{Referer}i -> %U" referer
+LogFormat "%{User-agent}i" agent
+
+FileETag none
+
+<IfModule deflate_module>
+  AddOutputFilterByType DEFLATE text/plain text/html text/css text/xml application/javascript application/x-javascript application/xml application/xml+rss text/javascript
+  BrowserMatch ^Mozilla/4 gzip-only-text/html
+  BrowserMatch ^Mozilla/4\.0[678] no-gzip
+  BrowserMatch \bMSIE !no-gzip !gzip-only-text/html
+</IfModule>
+
+<IfModule expires_module>
+  <FilesMatch "\.(pdf|flv|jpg|jpeg|png|gif|js|css|swf)">
+    ExpiresActive on
+    ExpiresDefault "access plus 10 years"
+  </FilesMatch>
+
+  <FilesMatch "\.(ico)$">
+    ExpiresActive on
+    ExpiresDefault "access plus 2 months"
+  </FilesMatch>
+</IfModule>
+
+<IfModule mod_mime.c>
+    AddDefaultCharset UTF-8
+</IfModule>
+
+Include <%= @node[:apache][:dir] %>/sites-enabled/

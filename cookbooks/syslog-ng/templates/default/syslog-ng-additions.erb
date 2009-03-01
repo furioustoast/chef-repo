@@ -1,0 +1,8 @@
+/var/log/apache2 /var/log/rails {
+   rotate 7
+   daily
+   compress
+   postrotate
+      /usr/sbin/invoke-rc.d syslog-ng reload >/dev/null
+   endscript
+}

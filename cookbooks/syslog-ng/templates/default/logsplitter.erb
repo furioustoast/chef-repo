@@ -1,0 +1,52 @@
+#!/opt/ruby-enterprise/bin/ruby
+require 'fileutils'
+
+# INSTALL
+# Add a lines like this to syslog-ng:
+# destination rails { program("/usr/local/bin/logsplitter '/var/log/rails' '/.*RAILS_(.*?)\\[/'"); };
+# filter rails { match(".*RAILS_.*"); };
+# log { source(s_all); filter(rails); destination(rails); };
+#
+# Where /var/log/rails is the basedir to log your files, and
+# /.*RAILS_(.*?)\[/ is a regexp with a single group that determines the name of the destination log file.
+# For example; with the above syslog-ng configuration the following line would be logged to /var/log/rails/test.log
+#
+# Feb 12 19:24:06 vm-ubuntu-1 RAILS_test[30070]: Completed in 0ms (View: 0, DB: 0) | 200 OK [http://vm-ubuntu-1/]
+
+class LogSplitter
+  def initialize(base_dir, split_with)
+    @split_with = eval(split_with)
+    @base_dir = base_dir
+    @files = {}
+    Kernel.at_exit{ close_files }
+    FileUtils.mkdir_p(@base_dir)
+  end
+
+  def close_files
+    @files.values.each do |f|
+      begin; f.close; rescue; end
+    end
+  end
+
+  def run
+    while(line = STDIN.readline) do
+      if name = @split_with.match(line)[1]
+        log(name, line)
+      end
+    end
+  end
+
+  def log(name, line)
+    file_name = "#{File.join(@base_dir, name)}.log"
+    if @files[file_name]
+      f = @files[file_name]
+    else
+      f = @files[file_name] = File.open(file_name, 'a')
+      f.sync = true
+    end
+
+    f.print line
+  end
+end
+
+LogSplitter.new(ARGV[0], ARGV[1]).run

@@ -26,7 +26,6 @@ gem_package("mime-types") { version node[:mime_types_version] }
 gem_package("mojombo-god") { version node[:mojombo_god_version] }
 gem_package("mysql") { version node[:mysql_version] }
 gem_package("passenger") { version node[:passenger_version] }
-gem_package("postgres") { version node[:postgres_version] }
 gem_package("rack") { version node[:rack_version] }
 gem_package("rails") { version node[:rails_version] }
 gem_package("rake") { version node[:rake_version] }

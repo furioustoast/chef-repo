@@ -38,5 +38,6 @@ chef-client
 
 echo "Now:"
 echo "* Login at http://${chef_ip}:4000/openid/consumer "
-echo "* Validate'" `hostname` "' at http://${chef_ip}:4000/registrations"
+echo "* Validate '"`hostname`"' at http://${chef_ip}:4000/registrations"
+echo "* Add recipes at http://${chef_ip}:4000/nodes/"`hostname`
 echo "* Run `chef-client` again"

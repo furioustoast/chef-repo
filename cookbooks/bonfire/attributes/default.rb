@@ -1,1 +1,1 @@
-recipes << "rails_passenger"
+recipes << "bonfire"

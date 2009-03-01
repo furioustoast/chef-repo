@@ -1,6 +1,44 @@
-include_recipe "base"
-include_recipe "apache2"
-include_recipe "postfix"
-include_recipe "mysql"
-# Ruby 1.9 would go here
-include_recipe "passenger"
+include_recipe "rails_passenger"
+
+gem_package("abstract") { version node[:abstract_version] }
+gem_package("actionmailer") { version node[:actionmailer_version] }
+gem_package("actionpack") { version node[:actionpack_version] }
+gem_package("activerecord") { version node[:activerecord_version] }
+gem_package("activeresource") { version node[:activeresource_version] }
+gem_package("activesupport") { version node[:activesupport_version] }
+gem_package("daemons") { version node[:daemons_version] }
+gem_package("erubis") { version node[:erubis_version] }
+gem_package("eventmachine") { version node[:eventmachine_version] }
+gem_package("extlib") { version node[:extlib_version] }
+gem_package("fastthread") { version node[:fastthread_version] }
+gem_package("fiveruns-dash-rails") { version node[:fiveruns_dash_rails_version] }
+gem_package("fiveruns-dash-ruby") { version node[:fiveruns_dash_ruby_version] }
+gem_package("fiveruns-memcache-client") { version node[:fiveruns_memcache_client_version] }
+gem_package("fiveruns-starling") { version node[:fiveruns_starling_version] }
+gem_package("hoe") { version node[:hoe_version] }
+gem_package("hpricot") { version node[:hpricot_version] }
+gem_package("json") { version node[:json_version] }
+gem_package("json_pure") { version node[:json_pure_version] }
+gem_package("mailfactory") { version node[:mailfactory_version] }
+gem_package("merb-core") { version node[:merb_core_version] }
+gem_package("merb-mailer") { version node[:merb_mailer_version] }
+gem_package("mime-types") { version node[:mime_types_version] }
+gem_package("mojombo-god") { version node[:mojombo_god_version] }
+gem_package("mysql") { version node[:mysql_version] }
+gem_package("passenger") { version node[:passenger_version] }
+gem_package("postgres") { version node[:postgres_version] }
+gem_package("rack") { version node[:rack_version] }
+gem_package("rails") { version node[:rails_version] }
+gem_package("rake") { version node[:rake_version] }
+gem_package("rspec") { version node[:rspec_version] }
+gem_package("rubyforge") { version node[:rubyforge_version] }
+gem_package("shuber-attr_encrypted") { version node[:shuber_attr_encrypted_version] }
+gem_package("shuber-eigenclass") { version node[:shuber_eigenclass_version] }
+gem_package("shuber-encryptor") { version node[:shuber_encryptor_version] }
+gem_package("simple-rss") { version node[:simple_rss_version] }
+gem_package("sqlite3-ruby") { version node[:sqlite3_ruby_version] }
+gem_package("SyslogLogger") { version node[:SyslogLogger_version] }
+gem_package("thor") { version node[:thor_version] }
+gem_package("tinder") { version node[:tinder_version] }
+gem_package("tmail") { version node[:tmail_version] }
+gem_package("twitter4r") { version node[:twitter4r_version] }

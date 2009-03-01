@@ -1,0 +1,1 @@
+recipes << "rails_passenger"

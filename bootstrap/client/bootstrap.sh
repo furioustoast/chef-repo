@@ -32,5 +32,6 @@ chef-client
 echo "Now:"
 echo "* Login at http://${chef_ip}:4000/openid/consumer "
 echo "* Validate '"`hostname`"' at http://${chef_ip}:4000/registrations"
+echo "* Run `chef-client` to create node entry"
 echo "* Add recipes at http://${chef_ip}:4000/nodes/"`hostname`
-echo "* Run `chef-client` again"
+echo "* Run `chef-client` again to run the recipes"

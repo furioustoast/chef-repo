@@ -1,11 +1,13 @@
 #!/bin/bash
 #
 # This is how you get this...
-#
-# apt-get install git-core
-# git clone git://github.com/furioustoast/chef-repo.git
-# cd chef-repo/bin 
-# ./bootstrap-client.sh CHEF_SERVER_IP_HERE
+# 1. Make sure you're in /root
+# 2. Run:
+#   apt-get update
+#   apt-get install git-core
+#   git clone git://github.com/furioustoast/chef-repo.git
+#   cd chef-repo/bin 
+#   ./bootstrap-client.sh CHEF_SERVER_IP_HERE
 
 if test -z "$1"
 then
@@ -14,12 +16,6 @@ then
 else
   chef_ip=$1
 fi
-
-scriptpath="${BASH_SOURCE[0]}";                                                                                                                             
-if([ -h "${scriptpath}" ]) then                                                                                                              
-  while([ -h "${scriptpath}" ]) do scriptpath=`readlink "${scriptpath}"`; done                                                                                                                                        
-fi
-scriptdir=`dirname $scriptpath`
 
 apt-get install ruby ruby1.8-dev rubygems libopenssl-ruby1.8 build-essential wget
 
@@ -36,7 +32,7 @@ sudo gem install chef ohai  --no-rdoc --no-ri
 echo "$chef_ip  chef" >> /etc/hosts
 
 mkdir /etc/chef
-cp $scriptdir/../config/client.rb /etc/chef/
+cp /root/chef-repo/config/client.rb /etc/chef/
 
 chef-client
 

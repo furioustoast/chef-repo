@@ -1,3 +1,5 @@
+include_recipe "base"
+
 package "mysql-server-5.0"
 
 template "/etc/mysql/conf.d/skip-networking" do

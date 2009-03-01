@@ -1,13 +1,6 @@
 #!/bin/bash
-#
-# This is how you get this...
-# 1. Make sure you're in /root
-# 2. Run:
-#   apt-get update
-#   apt-get install git-core
-#   git clone git://github.com/furioustoast/chef-repo.git
-#   cd chef-repo/bin 
-#   ./bootstrap-client.sh CHEF_SERVER_IP_HERE
+
+# See BOOTSTRAP_README
 
 if test -z "$1"
 then

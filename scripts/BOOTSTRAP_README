@@ -1,0 +1,7 @@
+1. Make sure you're in /root as root
+2. Run:
+  apt-get update
+  apt-get install git-core
+  git clone git://github.com/furioustoast/chef-repo.git
+  cd chef-repo/scripts
+  ./bootstrap-client.sh CHEF_SERVER_IP_HERE

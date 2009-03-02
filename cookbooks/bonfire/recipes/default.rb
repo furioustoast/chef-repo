@@ -56,7 +56,7 @@ node[:applications].each do |app, _|
   end
   
   bash "create_#{app}_production_db" do
-    %(mysql -u root --password=`cat /etc/mysql/.r` -e 'create database if not exists #{app}_production;')
+    code %(mysql -u root --password=`cat /etc/mysql/.r` -e 'create database if not exists #{app}_production;')
   end
   
 end

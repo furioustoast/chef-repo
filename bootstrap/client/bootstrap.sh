@@ -10,7 +10,7 @@ else
   chef_ip=$1
 fi
 
-apt-get install ruby ruby1.8-dev rubygems libopenssl-ruby1.8 build-essential wget
+apt-get install ruby ruby1.8-dev rubygems libopenssl-ruby1.8 libshadow-ruby1.8 build-essential wget
 
 # Replace apt-get rubygems
 cd /tmp

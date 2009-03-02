@@ -1,3 +1,12 @@
+node[:applications] = {
+  :bonfire => {
+    :server_name => 'bonfirenow.com',
+    :aliases => %w(www.bonfirenow.com),
+    :env => 'production',
+    :enable => true
+  }
+}
+
 include_recipe "rails_passenger"
 
 gem_package("abstract") { version node[:abstract_version] }

@@ -19,7 +19,7 @@ user node['user'] do
   shell "/bin/bash"
   # From makepasswd
   password "$1$JcizwzrY$K6p2kU.tQqc2vGrxGvPyh1"
-  supports :manage_home
+  supports [:manage_home]
 end
 
 # TODO: Extract this to its own recipe

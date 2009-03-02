@@ -74,7 +74,11 @@ bash "set_root_password" do
   not_if { File.exists?(pass_file) }
 end
 
-
+bash "generate_key" do
+  filename = '/home/deploy/.ssh/id_rsa'
+  code %(ssh-keygen -N '' -t rsa -f '#{filename}' -q)
+  not_if { File.exists?(filename) }
+end
 
 gem_package("abstract") { version node[:abstract_version] }
 gem_package("actionmailer") { version node[:actionmailer_version] }

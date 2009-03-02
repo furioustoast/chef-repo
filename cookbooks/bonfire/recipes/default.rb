@@ -1,3 +1,7 @@
+# Note: Pretty much everything in this cookbook should
+# be extracted out into a generic 'applications' cookbook
+# -- but for now, we'll play around here.
+
 node[:applications] = {
   :bonfire => {
     :server_name => 'bonfirenow.com',
@@ -27,7 +31,6 @@ directory "/home/#{node[:user]}" do
   mode 0755
 end
 
-# TODO: Extract this to its own recipe
 directory "/var/www/apps" do
   owner node[:user]
   mode 0755
@@ -52,7 +55,25 @@ node[:applications].each do |app, _|
     end
   end
   
+  bash "create_#{app}_production_db" do
+    %(mysql -u root --password=`cat /etc/mysql/.r` -e 'create database #{app}_production if not exists;')
+  end
+  
 end
+
+bash "set_root_password" do
+  pass = generate_password(10)
+  pass_file = '/etc/mysql/.r'
+  cmds = []
+  cmds << %(mysql -u root -e "SET PASSWORD FOR 'root'@'#{node[:hostname]}' = PASSWORD('#{pass}');
+              SET PASSWORD FOR 'root'@'localhost' = PASSWORD('#{pass}');")
+  cmds << "echo '#{pass}' > #{pass_file}"
+  cmds << "chmod 400 #{pass_file}"
+
+  code cmds.join(' && ')
+  not_if { File.exists?(pass_file) }
+end
+
 
 
 gem_package("abstract") { version node[:abstract_version] }

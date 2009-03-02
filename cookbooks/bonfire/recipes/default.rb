@@ -9,6 +9,44 @@ node[:applications] = {
 
 include_recipe "rails_passenger"
 
+node['user'] = 'deploy'
+
+user node['user'] do
+  comment "Deploy"
+  uid "1000"
+  gid "www-data"
+  home "/home/deploy"
+  shell "/bin/bash"
+  # From makepasswd
+  password "$1$JcizwzrY$K6p2kU.tQqc2vGrxGvPyh1"
+end
+
+# TODO: Extract this to its own recipe
+directory "/var/www/apps" do
+  owner node[:user]
+  mode 0755
+end
+
+node[:applications].each do |app, _|
+  
+  cap_directories = [
+    "/var/www/apps/#{app}/shared",
+    "/var/www/apps/#{app}/shared/config",
+    "/var/www/apps/#{app}/shared/system",
+    "/var/www/apps/#{app}/releases"
+  ]
+  
+  cap_directories.each do |dir|
+    directory dir do
+      owner node[:user]
+      mode 0755
+      recursive true
+    end
+  end
+  
+end
+
+
 gem_package("abstract") { version node[:abstract_version] }
 gem_package("actionmailer") { version node[:actionmailer_version] }
 gem_package("actionpack") { version node[:actionpack_version] }

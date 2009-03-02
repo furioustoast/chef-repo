@@ -22,6 +22,11 @@ user node['user'] do
   supports(:manage_home => true)
 end
 
+directory "/home/#{node[:user]}" do
+  owner node[:user]
+  mode 0755
+end
+
 # TODO: Extract this to its own recipe
 directory "/var/www/apps" do
   owner node[:user]

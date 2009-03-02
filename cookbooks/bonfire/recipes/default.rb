@@ -31,11 +31,13 @@ end
 directory "/var/www/apps" do
   owner node[:user]
   mode 0755
+  recursive true
 end
 
 node[:applications].each do |app, _|
   
   cap_directories = [
+    "/var/www/apps/#{app}",
     "/var/www/apps/#{app}/shared",
     "/var/www/apps/#{app}/shared/config",
     "/var/www/apps/#{app}/shared/system",
